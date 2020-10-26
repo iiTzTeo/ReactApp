@@ -1,24 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import Post from "./InstagramPost";
+import "./App.css";
 
 function App() {
+  const [post, setPost] = useState([
+    { utente: "Matteo", descrizione: "primo giorno su react", like: 0 },
+    { utente: "Luca", descrizione: "primo giorno su react", like: 0 },
+    { utente: "Andrea", descrizione: "primo giorno su react", like: 0 },
+  ]);
+
+  console.log(post);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Post data={post} postSetter={(a) => setPost(a)} />
     </div>
   );
 }
