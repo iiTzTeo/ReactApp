@@ -3,13 +3,49 @@ import React, { useState } from "react";
 function Calcolatrice() {
   const [contatore, setContatore] = useState(0);
 
+  const [lista, setlista] = useState(0);
+  const [operazioneCorrente, setOperazioneCorrente] = useState("");
+  const operatori = ["+", "-", "*", "/"];
+  const [temp, setTemp] = useState(0);
+
+  console.log(lista, temp);
+
   const printValues = (a) => {
+    const switchValues = (e) => {
+      switch (e[0]) {
+        case "+":
+          return Number(lista.join("") + Number(temp));
+        case "-":
+          return Number(lista.join("") - Number(temp));
+        case "*":
+          return Number(lista.join("") * Number(temp));
+        case "/":
+          return Number(lista.join("") / Number(temp));
+      }
+    };
+
     return a.map((e) => {
       return (
         <input
           type="button"
           value={e[0]}
-          onClick={(r) => console.log(r.target.value)}
+          onClick={() => {
+            if (e[0] === "=") {
+              console.log(lista, temp);
+            } else {
+              if (operatori.includes(e[0])) {
+                setTemp(switchValues(e[0]));
+                setOperazioneCorrente(e[0]);
+                e[2](0); // qui la inizializziamo
+              } else {
+                if (lista === 0 || lista === "0") {
+                  e[2](e[0]);
+                } else {
+                  e[2]([...lista, e[0]]);
+                }
+              }
+            }
+          }}
           className={e[1] ? "tastoLaterale" : e[0] === "=" ? "uguale" : "tasto"}
         />
       );
@@ -22,12 +58,16 @@ function Calcolatrice() {
         <p className="display">{contatore}</p>
       </div>
       <div className="contenuto">
-        <div className="contenuto">
+        <div className="contenuto ac">
           {printValues([
-            ["(", false],
-            [")", false],
-            ["%", false],
-            ["AC", true],
+            [
+              "AC",
+              true,
+              () => {
+                setlista(0);
+                setTemp(0);
+              },
+            ],
           ])}
         </div>
 

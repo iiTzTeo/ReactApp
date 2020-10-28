@@ -81,3 +81,9 @@ code {
   height: 30px;
   width: 70px;
 }
+
+.ac {
+  position: relative;
+  width: 55px;
+  left: calc(100% - 76px);
+}
