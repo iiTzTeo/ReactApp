@@ -2,21 +2,43 @@ import React, { useState } from "react";
 import App from "./App";
 
 function Calcolatrice() {
-  const [contatore, setContatore] = useState(0);
   const [lista, setlista] = useState(0);
-  console.log(lista);
+  cont[(operazioneCorrente, setOperatoreCorrente)] = useState(0);
+  const operazioni = ["+", "-", "*", "/"];
+  const [temp, setTemp] = useState(0);
 
   const printValues = (a) => {
+    const switchValues = (e) => {
+      switch (e[0]) {
+        case "+":
+          return Number(lista.join("") + Number(temp));
+        case "-":
+          return Number(lista.join("") - Number(temp));
+        case "*":
+          return Number(lista.join("") * Number(temp));
+        case "/":
+          return Number(lista.join("") / Number(temp));
+      }
+    };
+
     return a.map((e) => {
       return (
         <input
           type="button"
           value={e[0]}
           onClick={() => {
-            if (lista === 0) {
-              e[2](e[0]);
+            if (e[0] === "=") {
+              setlista(temp + operazioneCorrente + Number(lista.join("")));
+            }
+            if (operazioni.includes(e[0])) {
+              setTemp(Number(e[0]));
+              e[2](0);
             } else {
-              e[2](lista + e[0]);
+              if (lista === 0 || lista === ["0"]) {
+                e[2](e[0]);
+              } else {
+                e[2](...lista, e[0]);
+              }
             }
           }}
           className={e[1] ? "tastoLaterale" : e[0] === "=" ? "uguale" : "tasto"}
