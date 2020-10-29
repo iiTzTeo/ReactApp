@@ -4,10 +4,11 @@ import App from "./App";
 function Calcolatrice() {
   const [contatore, setContatore] = useState(0);
   const [lista, setlista] = useState(0);
+  const [temp, setTemp] = useState(0);
 
   const operators = ["+", "*", "-", "/"];
 
-  console.log(lista);
+  console.log(lista, temp);
 
   const printValues = (a) => {
     return a.map((e) => {
@@ -31,10 +32,22 @@ function Calcolatrice() {
     });
   };
 
+  const operazioni = (a, b) => {
+    switch (b) {
+      case "+":
+        console.log(a);
+        break;
+
+      default:
+        break;
+    }
+  };
+
   return (
     <>
       <div className="contenuto">
-        <p className="display">{lista}</p>
+        <label>{lista}</label>
+        <p className="display">{temp}</p>
       </div>
       <div className="contenuto">
         <div className="contenuto">
@@ -72,8 +85,16 @@ function Calcolatrice() {
             { value: "0", isLaterale: false, setLista: setlista },
             { value: ".", isLaterale: false, setLista: setlista },
             { value: "=", isLaterale: false, setLista: setlista },
-            { value: "+", isLaterale: true, setLista: setlista },
           ])}
+          <input
+            type="button"
+            value={"+"}
+            onClick={(e) => {
+              setTemp(lista.length ? Number(lista) + Number(temp) : lista);
+              setlista(lista.length ? [] : temp);
+            }}
+            className={"tastoLaterale"}
+          />
         </div>
       </div>
     </>
