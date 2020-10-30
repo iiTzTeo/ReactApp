@@ -1,52 +1,32 @@
 import React, { useState } from "react";
+import App from "./App";
 
 function Calcolatrice() {
   const [contatore, setContatore] = useState(0);
-
   const [lista, setlista] = useState(0);
-  const [operazioneCorrente, setOperazioneCorrente] = useState("");
-  const operatori = ["+", "-", "*", "/"];
   const [temp, setTemp] = useState(0);
+
+  const operators = ["+", "*", "-", "/"];
 
   console.log(lista, temp);
 
   const printValues = (a) => {
-    const switchValues = (e) => {
-      switch (e[0]) {
-        case "+":
-          return Number(lista.join("") + Number(temp));
-        case "-":
-          return Number(lista.join("") - Number(temp));
-        case "*":
-          return Number(lista.join("") * Number(temp));
-        case "/":
-          return Number(lista.join("") / Number(temp));
-      }
-    };
-
     return a.map((e) => {
+      const { value, isLaterale, setLista } = e;
       return (
         <input
           type="button"
-          value={e[0]}
+          value={value}
           onClick={() => {
-            if (e[0] === "=") {
-              console.log(lista, temp);
+            if (lista == "0") {
+              setLista(value);
             } else {
-              if (operatori.includes(e[0])) {
-                setTemp(switchValues(e[0]));
-                setOperazioneCorrente(e[0]);
-                e[2](0); // qui la inizializziamo
-              } else {
-                if (lista === 0 || lista === "0") {
-                  e[2](e[0]);
-                } else {
-                  e[2]([...lista, e[0]]);
-                }
-              }
+              setLista(lista + value);
             }
           }}
-          className={e[1] ? "tastoLaterale" : e[0] === "=" ? "uguale" : "tasto"}
+          className={
+            isLaterale ? "tastoLaterale" : value === "=" ? "uguale" : "tasto"
+          }
         />
       );
     });
@@ -55,53 +35,79 @@ function Calcolatrice() {
   return (
     <>
       <div className="contenuto">
-        <p className="display">{contatore}</p>
+        <label>{lista}</label>
+        <p className="display">{temp}</p>
       </div>
       <div className="contenuto">
-        <div className="contenuto ac">
+        <div className="contenuto">
           {printValues([
-            [
-              "AC",
-              true,
-              () => {
-                setlista(0);
-                setTemp(0);
-              },
-            ],
+            { value: "AC", isLaterale: true, setLista: () => setlista(0) },
           ])}
         </div>
 
         <div className="contenuto">
           {printValues([
-            ["7", false],
-            ["8", false],
-            ["9", false],
-            ["/", true],
+            { value: "7", isLaterale: false, setLista: setlista },
+            { value: "8", isLaterale: false, setLista: setlista },
+            { value: "9", isLaterale: false, setLista: setlista },
           ])}
+          <input
+            type="button"
+            value={"/"}
+            onClick={(e) => {
+              setTemp(lista.length ? Number(lista) / Number(temp) : lista);
+              setlista(lista.length ? [] : temp);
+            }}
+            className={"tastoLaterale"}
+          />
         </div>
         <div className="contenuto">
           {printValues([
-            ["4", false],
-            ["5", false],
-            ["6", false],
-            ["*", true],
+            { value: "4", isLaterale: false, setLista: setlista },
+            { value: "5", isLaterale: false, setLista: setlista },
+            { value: "6", isLaterale: false, setLista: setlista },
           ])}
+          <input
+            type="button"
+            value={"*"}
+            onClick={(e) => {
+              setTemp(lista.length ? Number(lista) * Number(temp) : lista);
+              setlista(lista.length ? [] : temp);
+            }}
+            className={"tastoLaterale"}
+          />
         </div>
         <div className="contenuto">
           {printValues([
-            ["1", false],
-            ["2", false],
-            ["3", false],
-            ["-", true],
+            { value: "1", isLaterale: false, setLista: setlista },
+            { value: "2", isLaterale: false, setLista: setlista },
+            { value: "3", isLaterale: false, setLista: setlista },
           ])}
+          <input
+            type="button"
+            value={"-"}
+            onClick={(e) => {
+              setTemp(lista.length ? Number(lista) - Number(temp) : lista);
+              setlista(lista.length ? [] : temp);
+            }}
+            className={"tastoLaterale"}
+          />
         </div>
         <div className="contenuto">
           {printValues([
-            ["0", false],
-            [".", false],
-            ["=", false],
-            ["+", true],
+            { value: "0", isLaterale: false, setLista: setlista },
+            { value: ".", isLaterale: false, setLista: setlista },
+            { value: "=", isLaterale: false, setLista: setlista },
           ])}
+          <input
+            type="button"
+            value={"+"}
+            onClick={(e) => {
+              setTemp(lista.length ? Number(lista) + Number(temp) : lista);
+              setlista(lista.length ? [] : temp);
+            }}
+            className={"tastoLaterale"}
+          />
         </div>
       </div>
     </>
